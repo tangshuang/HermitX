@@ -1,6 +1,6 @@
 <?php
 
-class hermit
+class Hermit
 {
     private $_settings;
     protected static $playerID = 0;
@@ -107,7 +107,7 @@ class hermit
     {
         $this->_css('APlayer.min');
         $this->_js('APlayer.min', $this->settings('jsplace'));
-        $this->_js('hermit-load.min', 1);
+        $this->_js('hermit-load', 1);
     }
 
     /**
@@ -447,7 +447,7 @@ class hermit
                 $roles   = $user->roles;
 
                 wp_localize_script('hermit-post', 'hermit', array(
-                    "ajax_url" => admin_url() . "admin-ajax.php",
+                    "ajax_url" => HERMIT_ADMIN_URL . "admin-ajax.php",
                     "max_page" => $maxPage,
                     "roles" => $roles,
                     "plugin_url" => HERMIT_URL
@@ -594,7 +594,7 @@ class hermit
         $ignore = add_query_arg(array(
             'action'   => 'hermit_ignore_cookies_pointer',
             '_wpnonce' => wp_create_nonce('hermit-ignore-cookies-pointer')
-        ), admin_url('admin-ajax.php'));
+        ), HERMIT_ADMIN_URL . 'admin-ajax.php');
 
         ob_start();
         call_user_func($callback, $ignore);
@@ -644,7 +644,7 @@ class hermit
                 "author" => $value->song_author,
                 "url" => $value->song_url,
                 "pic" => $value->song_cover,
-                "lrc" => admin_url() . "admin-ajax.php" . "?action=hermit&scope=remote_lyric&id=" . $value->id
+                "lrc" => HERMIT_ADMIN_URL . "admin-ajax.php" . "?action=hermit&scope=remote_lyric&id=" . $value->id
             );
         }
 
@@ -1009,7 +1009,7 @@ class hermit
     public function aplayer_init()
     {
         wp_localize_script('hermit-load.min', 'HermitX', array(
-            'ajaxurl' => admin_url('admin-ajax.php'),
+            'ajaxurl' => HERMIT_ADMIN_URL . 'admin-ajax.php',
             'version' => HERMIT_VERSION,
         ));
     }

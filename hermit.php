@@ -12,24 +12,19 @@ define('HERMIT_FILE', __FILE__);
 define('HERMIT_VERSION', '2.8.0');
 define('HERMIT_URL', plugins_url('', __FILE__));
 define('HERMIT_PATH', dirname(__FILE__));
-define('HERMIT_ADMIN_URL', admin_url());
+define('HERMIT_ADMIN_URL', '/wp-admin/');
 
 global $HMT, $HMTJSON;
 
 require HERMIT_PATH . '/class.json.php';
 require HERMIT_PATH . '/class.hermit.php';
-require HERMIT_PATH . '/class.update.php';
 
 if (!isset($HMT)) {
-    $HMT = new hermit();
+    $HMT = new Hermit();
 }
 
 if (!isset($HMTJSON)) {
     $HMTJSON = new HermitJson();
-}
-
-if (!isset($hmt_update)) {
-    $hmt_update = new Hermit_Update();
 }
 
 /**

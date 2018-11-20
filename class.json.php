@@ -104,7 +104,7 @@ class HermitJson
         if ($site === 'tencent') {
           $value = html_entity_decode($value, ENT_QUOTES | ENT_HTML5);
         }
-        
+
         $this->set_cache($cacheKey, $value, 24);
         return $value;
     }
@@ -224,10 +224,10 @@ class HermitJson
 
         if (!empty($response[0]["id"])) {
             //处理音乐信息
-            $mp3_url    = admin_url() . "admin-ajax.php" . "?action=hermit&scope=" . $site . "_song_url&id=" . $response[0]['url_id'];
+            $mp3_url    = HERMIT_ADMIN_URL . "admin-ajax.php" . "?action=hermit&scope=" . $site . "_song_url&id=" . $response[0]['url_id'];
             $music_name = $response[0]['name'];
             $cover      = $this->pic_url($site, $music_id, $response[0]['pic_id']);
-            $lyric      = admin_url() . "admin-ajax.php" . "?action=hermit&scope=" . $site . "_lyric&id=" . $response[0]['lyric_id'];
+            $lyric      = HERMIT_ADMIN_URL . "admin-ajax.php" . "?action=hermit&scope=" . $site . "_lyric&id=" . $response[0]['lyric_id'];
             $artists    = $response[0]['artist'];
             $artists = implode(",", $artists);
 
@@ -303,9 +303,9 @@ class HermitJson
 
 
             foreach ($result as $k => $value) {
-                $mp3_url = admin_url() . "admin-ajax.php" . "?action=hermit&scope=" . $site . "_song_url&id=" . $value["url_id"];
+                $mp3_url = HERMIT_ADMIN_URL . "admin-ajax.php" . "?action=hermit&scope=" . $site . "_song_url&id=" . $value["url_id"];
                 $cover   = $this->pic_url($site, $value['id'], $value['pic_id']);
-                $lyric   = admin_url() . "admin-ajax.php" . "?action=hermit&scope=" . $site . "_lyric&id=" . $value['lyric_id'];
+                $lyric   = HERMIT_ADMIN_URL . "admin-ajax.php" . "?action=hermit&scope=" . $site . "_lyric&id=" . $value['lyric_id'];
                 $album["songs"][] = array(
                     "id" => $value["id"],
                     "title" => $value["name"],
@@ -335,7 +335,7 @@ class HermitJson
 
         $proxy = $this->settings('proxy');
         if (!empty($proxy)) $Meting->proxy($proxy);
-        
+
         $cookies = $this->settings('netease_cookies');
         if (!empty($cookies) && $site === "netease") $Meting->cookie($cookies);
 
@@ -357,11 +357,11 @@ class HermitJson
             );
 
             foreach ($result as $k => $value) {
-                $mp3_url = admin_url() . "admin-ajax.php" . "?action=hermit&scope=" . $site . "_song_url&id=" . $value["url_id"];
+                $mp3_url = HERMIT_ADMIN_URL . "admin-ajax.php" . "?action=hermit&scope=" . $site . "_song_url&id=" . $value["url_id"];
                 $artists = $value["artist"];
                 $artists = implode(",", $artists);
                 $cover   = $this->pic_url($site, $value['id'], $value['pic_id']);
-                $lyric   = admin_url() . "admin-ajax.php" . "?action=hermit&scope=" . $site . "_lyric&id=" . $value['lyric_id'];
+                $lyric   = HERMIT_ADMIN_URL . "admin-ajax.php" . "?action=hermit&scope=" . $site . "_lyric&id=" . $value['lyric_id'];
                 $playlist["songs"][] = array(
                     "id" => $value["id"],
                     "title" => $value["name"],
