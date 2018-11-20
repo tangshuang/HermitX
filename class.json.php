@@ -437,7 +437,7 @@ class HermitJson
         return $cache === false ? false : json_decode($cache, true);
     }
 
-    public function set_cache($key, $value, $hour = 1)
+    public function set_cache($key, $value, $hour = 72)
     {
         $value = json_encode($value);
         set_transient($key, $value, $hour);
