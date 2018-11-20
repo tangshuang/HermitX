@@ -238,7 +238,7 @@ class Hermit
             $referer = parse_url($_SERVER["HTTP_REFERER"]);
             $host = strtolower($referer['host']);
         }
-        if (empty($_SERVER["HTTP_REFERER"]) || $host === parse_url(home_url())['host']) {
+        if (empty($_SERVER["HTTP_REFERER"]) || $host === $_SERVER['HTTP_HOST']) {
             $scope = $_GET['scope'];
             $id    = $_GET['id'];
 
