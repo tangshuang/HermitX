@@ -29,76 +29,92 @@ function cloneObject(src) {
 	}
 }
 
-function hermitInit() {
-	var aps = document.getElementsByClassName("aplayer");
-	var apnum = 0;
-	hermitPlayers = [];
-	var xhr = [];
-	var option = [];
-	for (let i = 0; i < aps.length; i++) {
-		if (aps[i].dataset.songs) {
-			option[i] = cloneObject(aps[i].dataset);
-			option[i].element = aps[i];
-			xhr[i] = new XMLHttpRequest();
-			xhr[i].onreadystatechange = function() {
-				var index = xhr.indexOf(this);
-				var op = option[index];
-				op.storageName = "HxAP-Setting";
-				if (this.readyState === 4) {
-					if (this.status >= 200 && this.status < 300 || this.status === 304) {
-						var response = JSON.parse(this.responseText);
-						op.music = response.msg.songs;
-						if (op.music === undefined) {
-							console.warn("Hermit-X failed to load " + option[index].songs);
-							return false;
-						}
-						if (op.showlrc === undefined) {
-							if (op.music[0].lrc) {
-								op.lrcType = 3;
-							} else {
-								op.lrcType = 0;
-							}
-						}
-						if (op.music.length === 1) {
-							op.music = op.music[0];
-						}
-						if (op.autoplay) {
-							op.autoplay = (op.autoplay === "true");
-						}
-						if (op.listfolded) {
-							op.listFolded = (op.listfolded === "true");
-						}
-						if (op.mutex) {
-							op.mutex = (op.mutex === "true");
-						}
-						if (op.narrow) {
-							op.narrow = (op.narrow === "true");
-						}
-						hermitPlayers[i] = new APlayer(op);
-						hermitPlayers[i].parseRespons = response;
-						if (window.APlayerCall && window.APlayerCall[i]) window.APlayerCall[i]();
-						if (window.APlayerloadAllCall && aps.length != hermitPlayers.length) {
-							window.APlayerloadAllCall();
-						}
-					}
-					else {
-						console.error("Request was unsuccessful: " + this.status);
+function hermitPut(element) {
+	let songs = element.dataset.songs;
+	if (!songs) {
+		return
+	}
+
+	let option = cloneObject(element.dataset);
+	let xhr = new XMLHttpRequest();
+
+	xhr.onreadystatechange = function() {
+		option.storageName = "HxAP-Setting";
+		if (this.readyState === 4) {
+			if (this.status >= 200 && this.status < 300 || this.status === 304) {
+				var response = JSON.parse(this.responseText);
+				option.music = response.msg.songs;
+				if (option.music === undefined) {
+					console.warn("Hermit-X failed to load " + option.songs);
+					return false;
+				}
+				if (option.showlrc === undefined) {
+					if (option.music[0].lrc) {
+						option.lrcType = 3;
+					} else {
+						option.lrcType = 0;
 					}
 				}
-			};
-			var scope = option[i].songs.split("#:");
-			var apiurl = HermitX.ajaxurl + "?action=hermit&scope=" + option[i].songs.split("#:")[0] + "&id=" + option[i].songs.split("#:")[1] + "&_nonce=" + option[i]._nonce;
-			xhr[i].open("get", apiurl, true);
-			xhr[i].send(null);
+				if (option.music.length === 1) {
+					option.music = option.music[0];
+				}
+				if (option.autoplay) {
+					option.autoplay = (option.autoplay === "true");
+				}
+				if (option.listfolded) {
+					option.listFolded = (option.listfolded === "true");
+				}
+				if (option.mutex) {
+					option.mutex = (option.mutex === "true");
+				}
+				if (option.narrow) {
+					option.narrow = (option.narrow === "true");
+				}
+
+				let player = new APlayer(option);
+
+				player.parseRespons = response;
+				hermitPlayers.push(player);
+				element.hermitPlayer = player;
+
+				if (window.APlayerCall && window.APlayerCall[i]) {
+					window.APlayerCall[i]();
+				}
+				if (window.APlayerloadAllCall && aps.length != hermitPlayers.length) {
+					window.APlayerloadAllCall();
+				}
+			}
+			else {
+				console.error("Request was unsuccessful: " + this.status);
+			}
 		}
+	};
+
+	let scope = option.songs.split("#:");
+	let apiurl = HermitX.ajaxurl + "?action=hermit&scope=" + scope[0] + "&id=" + scope[1] + "&_nonce=" + option._nonce;
+
+	xhr.open("get", apiurl, true);
+	xhr.send(null);
+}
+
+function hermitInit() {
+	for (var i = 0; i < hermitPlayers.length; i++) {
+		try { hermitPlayers[i].destroy(); } catch (e) {}
+	}
+
+	hermitPlayers = [];
+
+	let elements = document.getElementsByClassName("aplayer");
+
+	for (let i = 0, len = elements.length; i < len; i++) {
+		let element = elements[i];
+		hermitPut(element);
 	}
 }
 
-function hermitReload() {
-	for (var i = 0; i < hermitPlayers.length; i++) {
-		try {
-			hermitPlayers[i].destroy();
-		} catch (e) {}
+function hermitReload(element) {
+	if (element.hermitPlayer) {
+		element.hermitPlayer.destroy()
 	}
-	hermitInit();
+	hermitPut(element);
 }
