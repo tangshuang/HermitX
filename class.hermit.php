@@ -1008,7 +1008,7 @@ class Hermit
 
     public function aplayer_init()
     {
-        wp_localize_script('hermit-load.min', 'HermitX', array(
+        wp_localize_script('hermit-load', 'HermitX', array(
             'ajaxurl' => HERMIT_ADMIN_URL . 'admin-ajax.php',
             'version' => HERMIT_VERSION,
         ));

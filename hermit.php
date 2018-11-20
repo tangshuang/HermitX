@@ -1,11 +1,9 @@
 <?php
 /*
-Plugin Name: Hermit X
-Plugin URI: https://blog.lwl12.com/read/hermit-x.html
+Plugin Name: HermitX
+Plugin URI: https://github.com/tangshuang/HermitX
 Description: 音乐播放器 Hermit music player build for wordpress with APlayer
 Version: 2.8.0
-Author: Hermit X Developer Team
-Author URI: https://blog.lwl12.com/read/hermit-x.html#developer
 */
 
 define('HERMIT_FILE', __FILE__);
