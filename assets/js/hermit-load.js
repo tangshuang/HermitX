@@ -43,7 +43,10 @@ function hermitPut(element) {
 		if (this.readyState === 4) {
 			if (this.status >= 200 && this.status < 300 || this.status === 304) {
 				var response = JSON.parse(this.responseText);
+
 				option.music = response.msg.songs;
+				option.element = element;
+
 				if (option.music === undefined) {
 					console.warn("Hermit-X failed to load " + option.songs);
 					return false;
@@ -76,13 +79,6 @@ function hermitPut(element) {
 				player.parseRespons = response;
 				hermitPlayers.push(player);
 				element.hermitPlayer = player;
-
-				if (window.APlayerCall && window.APlayerCall[i]) {
-					window.APlayerCall[i]();
-				}
-				if (window.APlayerloadAllCall && aps.length != hermitPlayers.length) {
-					window.APlayerloadAllCall();
-				}
 			}
 			else {
 				console.error("Request was unsuccessful: " + this.status);

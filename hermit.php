@@ -3,11 +3,11 @@
 Plugin Name: HermitX
 Plugin URI: https://github.com/tangshuang/HermitX
 Description: 音乐播放器 Hermit music player build for wordpress with APlayer
-Version: 2.8.0
+Version: 3.0.0
 */
 
 define('HERMIT_FILE', __FILE__);
-define('HERMIT_VERSION', '2.8.0');
+define('HERMIT_VERSION', '3.0.0');
 define('HERMIT_URL', plugins_url('', __FILE__));
 define('HERMIT_PATH', dirname(__FILE__));
 define('HERMIT_ADMIN_URL', '/wp-admin/');
